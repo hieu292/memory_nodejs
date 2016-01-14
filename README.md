@@ -11,14 +11,14 @@ Memory Leak xảy ra khi bộ nhớ bị chiếm dụng trong quá trình chạy
 Nguyên nhân chính là do Closures
 
 Ví dụ:
-
+```
 function setHandler() {
     var elem = document.getElementById('id');
     elem.onclick = function() {
         // ...
     }
 }
-
+```
 Phần tử DOM liên kết với hàm thông qua event handler onclick và function liên kết ngược lại với elem thông qua LexicalEnviroment.
 
 <img src="https://viblo.asia/uploads/images/9d74fd9ab2537167edd5d2fb4fdde7a327e59012/91a1724cfc69d33b58df90b3b43a73c056a78eae.png"></img>
@@ -26,12 +26,12 @@ Phần tử DOM liên kết với hàm thông qua event handler onclick và func
 Cấu trúc này xuất hiện ngay cả khi không có bất kì dòng code nào trong handler. Đặc biệt là addEventListener/attachEvent cũng tạo liên kết cục bộ.
 
 Vậy muốn xóa phần tử elem ta thường dùng:
-
+```
 function cleanUp() {
   var elem = document.getElementById('id')
   elem.parentNode.removeChild(elem)
 }
-
+```
 Gọi hàm cleanUp xóa elem trong DOM. Vẫn còn một tham chiếu LexialEnvironment.elem 
 Nhưng vì không có hàm lồng vào (ví dụ trên là onclick), nên LexialEnvironment sẽ bị xóa. Sau đó elem không thể truy cập và sẽ bị xóa
 
@@ -55,6 +55,7 @@ xem thêm tại: https://developer.chrome.com/devtools/docs/javascript-memory-pr
 
 1. Trả về null khi không sử dụng
 vd:
+```
 function setHandler() {
     var elem = document.getElementById('id');
     elem.onclick = function() {
@@ -62,8 +63,10 @@ function setHandler() {
     }
     elem = null; //This breaks the circular reference
 }
+```
 2. Thêm một hàm khác trong closures
    VD:
+```
    document.write("Avoiding a memory leak by adding another closure");
            window.onload=function outerFunction(){
            var anotherObj = function innerFunction() {
@@ -73,6 +76,7 @@ function setHandler() {
                var obj =  document.getElementById("element");
                obj.onclick=anotherObj })();
            };
+```
    
    Hàm anotherInnerFunction sẽ tự động được gọi và gán event handler cho obj mà không gây ra vòng lặp tham chiếu (circular references) trong closure của cả 2 hàm.
     
