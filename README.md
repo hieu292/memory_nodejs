@@ -9,7 +9,9 @@ Memory Leak xảy ra khi bộ nhớ bị chiếm dụng trong quá trình chạy
 **Nguyên Nhân (trong NodeJS và JavaScript)**
 
 Nguyên nhân chính là do Closures
+
 Ví dụ:
+
 function setHandler() {
     var elem = document.getElementById('id');
     elem.onclick = function() {
@@ -34,9 +36,11 @@ Gọi hàm cleanUp xóa elem trong DOM. Vẫn còn một tham chiếu LexialEnvi
 Nhưng vì không có hàm lồng vào (ví dụ trên là onclick), nên LexialEnvironment sẽ bị xóa. Sau đó elem không thể truy cập và sẽ bị xóa
 
 **More leakage patterns**
+
 Để xem thêm các mẫu code bị leak (More leakage patterns) ta có thể xem tại http://www.javascriptkit.com/javatutors/closuresleak/index3.shtml
 
 **Phát hiện và Phân tích**
+
 1. Javascipt trên client thì ta dùng Chrome Dev Tool để snapshot heap memory
 xem thêm tại: https://developer.chrome.com/devtools/docs/javascript-memory-profiling
 2. Nodejs trên local:
@@ -46,7 +50,9 @@ xem thêm tại: https://developer.chrome.com/devtools/docs/javascript-memory-pr
     https://www.npmjs.com/package/memwatch
     https://github.com/bnoordhuis/node-heapdump
   tutorial tai: http://www.nearform.com/nodecrunch/self-detect-memory-leak-node/
+
 **Cách phòng tránh**
+
 1. Trả về null khi không sử dụng
 vd:
 function setHandler() {
